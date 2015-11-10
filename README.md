@@ -1,9 +1,9 @@
 # caffe_compact_data_layer
 It add a CompactDataLayer to implement more data transformation operations
 
-This is another linux version of real-time augmentation based on @ChenlongChen's [caffe-windows](https://github.com/ChenglongChen/caffe-windows)
+This is another linux version of real-time augmentation based on @[ChenlongChen](https://github.com/ChenglongChen)'s [caffe-windows](https://github.com/ChenglongChen/caffe-windows)
 
-@senecaur's [caffe-rta](https://github.com/senecaur/caffe-rta) is another importance reference. 
+@[senecaur](https://github.com/senecaur)'s [caffe-rta](https://github.com/senecaur/caffe-rta) is another importance reference. 
 
 The motivation of this new version is the modifications in the original caffe framwork's APIs which makes
 it hard to merge into our current work.

@@ -1,0 +1,91 @@
+name: "AlexNet"
+layer {
+  name: "data"
+  type: "CompactData"
+  top: "data"
+  top: "label"
+  include {
+    phase: TRAIN
+  }
+  transform_param {
+    mirror: true
+    crop_size: 80
+    debug_display: true
+    smooth_filtering: true
+    contrast_adjustment: true
+    min_scaling_factor: 0.8
+    max_scaling_factor: 1.2
+    angle_interval: 15
+    max_shearing_ratio:0.1
+    max_perspective_ratio: 0.1
+    warp_fillval: 0
+    mean_file: "data/casia-webface-all/mean.binaryproto"
+  }
+  data_param {
+    source: "data/casia-webface-all/casia-all-train-lmdb"
+    batch_size: 1
+    backend: LMDB
+  }
+}
+layer {
+  name: "data"
+  type: "CompactData"
+  top: "data"
+  top: "label"
+  include {
+    phase: TEST
+  }
+  transform_param {
+    mirror: false
+    crop_size: 80
+    debug_display: true
+    mean_file: "data/casia-webface-all/mean.binaryproto"
+  }
+  data_param {
+    source: "data/casia-webface-all/casia-all-test-lmdb/"
+    batch_size: 50
+    backend: LMDB
+  }
+}
+layer {
+  name: "fc8"
+  type: "InnerProduct"
+  bottom: "data"
+  top: "fc8"
+  param {
+    lr_mult: 1
+    decay_mult: 1
+  }
+  param {
+    lr_mult: 2
+    decay_mult: 0
+  }
+  inner_product_param {
+    num_output: 10575
+    weight_filler {
+      type: "gaussian"
+      std: 0.01
+    }
+    bias_filler {
+      type: "constant"
+      value: 0
+    }
+  }
+}
+layer {
+  name: "accuracy"
+  type: "Accuracy"
+  bottom: "fc8"
+  bottom: "label"
+  top: "accuracy"
+  include {
+    phase: TEST
+  }
+}
+layer {
+  name: "loss"
+  type: "SoftmaxWithLoss"
+  bottom: "fc8"
+  bottom: "label"
+  top: "loss"
+}
